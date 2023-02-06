@@ -22,8 +22,5 @@ public class Main {
         data[3] = mode.getBytes();
         data[4] = 0;
 
-
-
-
     }
 }
