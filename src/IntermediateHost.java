@@ -26,8 +26,6 @@ public class IntermediateHost implements Runnable{
             // receive UDP Datagram packets.
             receiveSocket = new DatagramSocket(23);
 
-            // to test socket timeout (2 seconds) ---------------------- delete later
-            //receiveSocket.setSoTimeout(2000);
         } catch (SocketException se) {
             se.printStackTrace();
             System.exit(1);
@@ -41,7 +39,7 @@ public class IntermediateHost implements Runnable{
      */
     public void run()
     {
-        /* Receive packet from the client */
+                                                 /* Receive packet from the client */
 
         // Construct a DatagramPacket for receiving packets up
         // to 100 bytes long (the length of the byte array).
@@ -62,16 +60,12 @@ public class IntermediateHost implements Runnable{
         }
 
         // Process the received datagram.
-        System.out.println("Host: Client Packet received:");
-        System.out.println("From Client: " + receiveClientPacket.getAddress());
-        System.out.println("Client port: " + receiveClientPacket.getPort());
-        int len = receiveClientPacket.getLength();
-        System.out.println("Length: " + len);
-        System.out.print("Containing: " );
-
-        // Form a String from the byte array.
-        String received = new String(data,0,len);
-        System.out.println(received + "\n");
+        String packetInfo = "Host: Client Packet received:" + "\n" +
+                "From Client: " + receiveClientPacket.getAddress() + "\n" +
+                "Client port: " + receiveClientPacket.getPort() + "\n" +
+                "Length: " + receiveClientPacket.getLength() + "\n" +
+                "Containing: " + new String(data,0,receiveClientPacket.getLength()) + "\n";
+        System.out.println(packetInfo);
 
         // Slow things down (wait 2 seconds)
         try {
@@ -81,19 +75,20 @@ public class IntermediateHost implements Runnable{
             System.exit(1);
         }
 
-        /* Create a new datagram packet containing the string received from the client.
-        *   and send it to the server */
+
+                                        /* Create a new datagram packet containing the string received from the client.
+                                                             *   and send it to the server */
+
 
         sendServerPacket = new DatagramPacket(data, receiveClientPacket.getLength(),
             receiveClientPacket.getAddress(), 69);
 
-        System.out.println( "Host: Sending packet to server:");
-        System.out.println("To Server: " + sendServerPacket.getAddress());
-        System.out.println("Destination Server port: " + sendServerPacket.getPort());
-        len = sendServerPacket.getLength();
-        System.out.println("Length: " + len);
-        System.out.print("Containing: ");
-        System.out.println(new String(sendServerPacket.getData(),0,len));
+        packetInfo = "Host: Sending packet to server:" + "\n" +
+                "To Server: " + sendServerPacket.getAddress() + "\n" +
+                "Destination Server port: " + sendServerPacket.getPort() + "\n" +
+                "Length: " + sendServerPacket.getLength() + "\n" +
+                "Containing: " + new String(sendServerPacket.getData(),0,sendServerPacket.getLength()) + "\n";
+        System.out.println(packetInfo);
 
         try {
             sendSocket.send(sendServerPacket);
@@ -104,11 +99,12 @@ public class IntermediateHost implements Runnable{
 
         System.out.println("Host: packet sent to server");
 
-        /* Receive packet from server */
+
+                                               /* ----Receive packet from server---- */
+
 
         // Construct a DatagramPacket for receiving packets up
         // to 100 bytes long (the length of the byte array).
-
         data = new byte[100];
         receiveServerPacket = new DatagramPacket(data, data.length);
         System.out.println("Host: Waiting for Server Packet.\n");
@@ -125,16 +121,12 @@ public class IntermediateHost implements Runnable{
         }
 
         // Process the received datagram.
-        System.out.println("Host: Server Packet received:");
-        System.out.println("From Server: " + receiveServerPacket.getAddress());
-        System.out.println("Server port: " + receiveServerPacket.getPort());
-        len = receiveServerPacket.getLength();
-        System.out.println("Length: " + len);
-        System.out.print("Containing: " );
-
-        // Form a String from the byte array.
-        received = new String(data,0,len);
-        System.out.println(received + "\n");
+        packetInfo = "Host: Server Packet received:" + "\n" +
+                "From Server: " + receiveServerPacket.getAddress() + "\n" +
+                "Server port: " + receiveServerPacket.getPort() + "\n" +
+                "Length: " + receiveServerPacket.getLength() + "\n" +
+                "Containing: " + new String(data,0,receiveServerPacket.getLength()) + "\n";
+        System.out.println(packetInfo);
 
         // Slow things down (wait 2 seconds)
         try {
@@ -144,19 +136,19 @@ public class IntermediateHost implements Runnable{
             System.exit(1);
         }
 
-        /* Create a new datagram packet containing the string received from the Server.
-         *   and send it to the Client */
+                                  /* Create a new datagram packet containing the string received from the Server.
+                                                      *   and send it to the Client */
+
 
         sendClientPacket = new DatagramPacket(data, receiveServerPacket.getLength(),
                 receiveClientPacket.getAddress(), receiveClientPacket.getPort());
 
-        System.out.println( "Host: Sending packet to Client:");
-        System.out.println("To Client: " + sendClientPacket.getAddress());
-        System.out.println("Destination Client port: " + sendClientPacket.getPort());
-        len = sendClientPacket.getLength();
-        System.out.println("Length: " + len);
-        System.out.print("Containing: ");
-        System.out.println(new String(sendClientPacket.getData(),0,len));
+        packetInfo = "Host: Sending packet to Client:" + "\n" +
+                "To Client: " + sendClientPacket.getAddress() + "\n" +
+                "Destination Client port: " + sendClientPacket.getPort() + "\n" +
+                "Length: " + sendClientPacket.getLength() + "\n" +
+                "Containing: " + new String(sendClientPacket.getData(),0, sendClientPacket.getLength()) + "\n";
+        System.out.println(packetInfo);
 
         try {
             sendSocket.send(sendClientPacket);

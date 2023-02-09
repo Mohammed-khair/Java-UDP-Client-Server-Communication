@@ -29,11 +29,10 @@ public class Client implements Runnable{
      */
     public void run()
     {
-        /* Send the message to the intermediate host */
+                                          /* Send the message to the intermediate host */
 
-        String s = "Anyone there?";
-        System.out.println("Client: sending a packet containing:\n" + s);
-
+        //String s = "Anyone there?";
+        String s = "0 1 test.txt 0 octet 0";
         byte msg[] = s.getBytes(); //convert the string into bytes
 
         /* Create the packet to be sent */
@@ -46,13 +45,12 @@ public class Client implements Runnable{
         }
 
         /* Print information about packet to be sent */
-        System.out.println("Client: Sending packet:");
-        System.out.println("To host: " + sendPacket.getAddress());
-        System.out.println("Destination host port: " + sendPacket.getPort());
-        int len = sendPacket.getLength();
-        System.out.println("Length: " + len);
-        System.out.print("Containing: ");
-        System.out.println(new String(sendPacket.getData(),0,len));
+        String packetInfo = "Client: Sending packet: \n" +
+                "To host: " + sendPacket.getAddress() + "\n" +
+                "Destination host port: " + sendPacket.getPort() + "\n" +
+                "Length: " + sendPacket.getLength() + "\n" +
+                "Containing: " + new String(sendPacket.getData(),0,sendPacket.getLength()) + "\n";
+        System.out.println(packetInfo);
 
         /* Send the packet */
         try {
@@ -64,12 +62,13 @@ public class Client implements Runnable{
 
         System.out.println("Client: Packet sent.\n");
 
-        /* Receive the packet sent by the intermediate host */
+                                          /* Receive the packet sent by the intermediate host */
 
         // create the received packet
         byte data[] = new byte[100];
         receivePacket = new DatagramPacket(data, data.length);
 
+        // wait to receive the packet
         try {
             // Block until a datagram is received via sendReceiveSocket.
             sendReceiveSocket.receive(receivePacket);
@@ -79,19 +78,17 @@ public class Client implements Runnable{
         }
 
         // Process the received datagram.
-        System.out.println("Client: Packet received:");
-        System.out.println("From host: " + receivePacket.getAddress());
-        System.out.println("Host port: " + receivePacket.getPort());
-        len = receivePacket.getLength();
-        System.out.println("Length: " + len);
-        System.out.print("Containing: ");
-
-        // Form a String from the byte array.
-        String received = new String(data,0,len);
-        System.out.println(received);
+        packetInfo = "Client: Packet received: \n" +
+                "From host: " + receivePacket.getAddress() + "\n" +
+                "Host port: " + receivePacket.getPort() + "\n" +
+                "Length: " + receivePacket.getLength() + "\n" +
+                "Containing: " + new String(data,0,receivePacket.getLength()) + "\n";
+        System.out.println(packetInfo);
+        System.out.println("Client: Host Packet received.\n");
 
         // We're finished, so close the socket.
         sendReceiveSocket.close();
     }
+
 
 }

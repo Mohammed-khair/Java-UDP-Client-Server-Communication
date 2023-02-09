@@ -25,8 +25,6 @@ public class Server implements Runnable{
             // receive UDP Datagram packets.
             receiveSocket = new DatagramSocket(69);
 
-            // to test socket timeout (2 seconds) ---------------------- delete later
-            //receiveSocket.setSoTimeout(2000);
         } catch (SocketException se) {
             se.printStackTrace();
             System.exit(1);
@@ -39,6 +37,8 @@ public class Server implements Runnable{
      */
     public void run()
     {
+                                      /* Receive packet form intermediate host */
+
         // Construct a DatagramPacket for receiving packets up
         // to 100 bytes long (the length of the byte array).
 
@@ -58,16 +58,12 @@ public class Server implements Runnable{
         }
 
         // Process the received datagram.
-        System.out.println("Server: Host Packet received:");
-        System.out.println("From host: " + receivePacket.getAddress());
-        System.out.println("Host port: " + receivePacket.getPort());
-        int len = receivePacket.getLength();
-        System.out.println("Length: " + len);
-        System.out.print("Containing: " );
-
-        // Form a String from the byte array.
-        String received = new String(data,0,len);
-        System.out.println(received + "\n");
+        String packetInfo = "Server: Host Packet received:" + "\n" +
+                "From host: " + receivePacket.getAddress() + "\n" +
+                "Host port: " + receivePacket.getPort() + "\n" +
+                "Length: " + receivePacket.getLength() + "\n" +
+                "Containing: " + new String(data,0, receivePacket.getLength()) + "\n";
+        System.out.println(packetInfo);
 
         // Slow things down (wait 5 seconds)
         try {
@@ -77,19 +73,18 @@ public class Server implements Runnable{
             System.exit(1);
         }
 
-        /* Create a new datagram packet containing the string received from the Host
-         * process it then send it back to the host  */
+                                  /* Create a new datagram packet containing the string received from the Host
+                                               * process it then send it back to the host  */
 
         sendPacket = new DatagramPacket(data, receivePacket.getLength(),
                 receivePacket.getAddress(), 23);
 
-        System.out.println("Server: Sending packet to Host:");
-        System.out.println("To host: " + sendPacket.getAddress());
-        System.out.println("Destination host port: " + sendPacket.getPort());
-        len = sendPacket.getLength();
-        System.out.println("Length: " + len);
-        System.out.print("Containing: ");
-        System.out.println(new String(sendPacket.getData(),0,len));
+        packetInfo = "Server: Sending packet to Host: " + "\n" +
+                "To host: " + sendPacket.getAddress() + "\n" +
+                "Destination host port: " + sendPacket.getPort() + "\n" +
+                "Length: " + sendPacket.getLength() + "\n" +
+                "Containing: " + new String(sendPacket.getData(),0, sendPacket.getLength()) + "\n";
+        System.out.println(packetInfo);
 
         // Send the datagram packet to the client via the send socket.
         try {
@@ -99,7 +94,7 @@ public class Server implements Runnable{
             System.exit(1);
         }
 
-        System.out.println("Server: packet sent to client");
+        System.out.println("Server: packet sent to Host");
 
         // We're finished, so close the sockets.
         sendSocket.close();

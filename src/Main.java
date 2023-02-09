@@ -5,7 +5,7 @@ import static java.lang.Byte.parseByte;
 public class Main {
     public static void main(String[] args) {
 
-        /*
+
         Server server = new Server();
         IntermediateHost host = new IntermediateHost();
         Client client = new Client();
@@ -18,21 +18,7 @@ public class Main {
         hostThread.start();
         clientThread.start();
 
-
-
-        byte data[] = new byte[100];
-        data[0] = 0;
-        data[1] = 1;
-        String filename = "test.txt";
-        data[2] = filename.getBytes(); //filename
-        String mode = "octet";
-        data[3] = mode.getBytes(); //mode
-        data[4] = 0;
-
-        for (int i = 0; i < 5; i++) {
-            System.out.println(data[i] + "");
-        }
-        */
+/*
         String filename = "test.txt";
         String mode = "octet";
         byte[] arr[] = new byte[6][];
@@ -42,6 +28,10 @@ public class Main {
         arr[3] = ByteBuffer.allocate(4).putInt(0).array();
         arr[4] = mode.getBytes(); //mode
         arr[5] = ByteBuffer.allocate(4).putInt(0).array();
+        System.out.println("" + arr.length);
+        String s = "01 test.txt 0 octet 0";
+        byte msg[] = s.getBytes();
+        System.out.println("" + msg.length);
 
         for (int i = 0; i < 5; i++) {
             if (i != 2 && i != 4) {
@@ -50,6 +40,6 @@ public class Main {
                 System.out.println(new String(arr[i]));
             }
         }
-
+        */
     }
 }
