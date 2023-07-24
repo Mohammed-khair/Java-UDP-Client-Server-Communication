@@ -1,4 +1,3 @@
-# UDP-IP
 # UDP Client-Server Communication
 
 This project demonstrates a simple UDP client-server communication using three Java classes: `Client`, `IntermediateHost`, and `Server`. The communication involves sending a message from the client to the intermediate host, then from the intermediate host to the server, and finally, the server sends a response back to the intermediate host and subsequently to the client.
